@@ -1,5 +1,15 @@
 <?php
   session_start();
+  include './inc/env.php';
+  //* ID FETCH FROM URL
+  $id=$_GET['id'];
+
+  //*QUERY
+  $query="SELECT id,title,description FROM post WHERE id='$id'";
+  $fetch=mysqli_query($conn,$query);
+  $post=mysqli_fetch_assoc($fetch);
+
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -55,11 +65,11 @@
 
 <div class="card col-md-6 mx-auto mt-3">
     <div class="card-header text-center text-white bg-secondary">
-        <h3>Add a new post</h3>
+        <h3>Edit a new post</h3>
     </div>
     <div class="card-body">
-        <form action="./controller/post_store.php" method="POST">
-            <input type="text" placeholder="Add a title" class="form-control" name="title">
+        <form action="./controller/post_update.php" method="POST">
+            <input type="text" placeholder="Add a title" class="form-control" name="title" value="<?=$post['title']?>">
             <span class="text-danger">
             <?php
             if(isset($_SESSION['error_title'])){
@@ -67,7 +77,7 @@
             } 
             ?>
             </span>
-            <textarea name="description" class="form-control my-3" placeholder="Add description"></textarea>
+            <textarea name="description" class="form-control my-3" placeholder="Add description"><?=$post['description']?></textarea>
             <span class="text-danger">
             <?php
             if(isset($_SESSION['error_description'])){
@@ -75,7 +85,7 @@
             } 
             ?>
             </span>
-            <button class="btn btn-primary w-100" name="submit_button">Post</button>
+            <button class="btn btn-primary w-100" name="submit_button">Save Changes</button>
         </form>
     </div>
 
